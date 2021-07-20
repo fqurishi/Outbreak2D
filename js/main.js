@@ -33,6 +33,43 @@ import * as CLIENT from './Client.js'
             //controller inputs
             let spaceUp = true;
 
+            //misc textures loaded
+            const tex1 = new THREE.TextureLoader().load( './resources/OBbackground.png' );
+            const tex2 = new THREE.TextureLoader().load( './resources/bullet.png' );
+            let tex3, tex4, tex5, tex6, tex7, tex8;
+            
+            // character 1 texture loading
+            const jamesTex1 = new THREE.TextureLoader().load( './resources/Character_01/Stand.png' );
+            const jamesTex3 = new THREE.TextureLoader().load( './resources/Character_01/Gun_Stand.png' );
+            const jamesTex4 = new THREE.TextureLoader().load( './resources/Character_01/Gun_Walk.png' );
+            const jamesTex5 = new THREE.TextureLoader().load( './resources/Character_01/Climbing _01.png' );
+            const jamesTex6 = new THREE.TextureLoader().load( './resources/Character_01/Climbing _02.png' );
+            const jamesTex2 = new THREE.TextureLoader().load( './resources/Character_01/Walk.png' );
+                            
+            // character 2 Texture loading
+            const alexTex1 = new THREE.TextureLoader().load( './resources/Character_02/Stand.png' );
+            const alexTex3 = new THREE.TextureLoader().load( './resources/Character_02/Gun_Stand.png' );
+            const alexTex4 = new THREE.TextureLoader().load( './resources/Character_02/Gun_Walk.png' );
+            const alexTex5 = new THREE.TextureLoader().load( './resources/Character_02/Climbing _01.png' );
+            const alexTex6 = new THREE.TextureLoader().load( './resources/Character_02/Climbing _02.png' );
+            const alexTex2 = new THREE.TextureLoader().load( './resources/Character_02/Walk.png' );
+            
+            //character 3 texture loading
+            const cyrusTex1 = new THREE.TextureLoader().load( './resources/Character_03/Stand.png' );
+            const cyrusTex3 = new THREE.TextureLoader().load( './resources/Character_03/Gun_Stand.png' );
+            const cyrusTex4 = new THREE.TextureLoader().load( './resources/Character_03/Gun_Walk.png' );
+            const cyrusTex5 = new THREE.TextureLoader().load( './resources/Character_03/Climbing _01.png' );
+            const cyrusTex6 = new THREE.TextureLoader().load( './resources/Character_03/Climbing _02.png' );
+            const cyrusTex2 = new THREE.TextureLoader().load( './resources/Character_03/Walk.png' );
+        
+            //character 4 texture loading
+            const grimTex1 = new THREE.TextureLoader().load( './resources/Character_04/Stand.png' );
+            const grimTex3 = new THREE.TextureLoader().load( './resources/Character_04/Gun_Stand.png' );
+            const grimTex4 = new THREE.TextureLoader().load( './resources/Character_04/Gun_Walk.png' );
+            const grimTex5 = new THREE.TextureLoader().load( './resources/Character_04/Climbing _01.png' );
+            const grimTex6 = new THREE.TextureLoader().load( './resources/Character_04/Climbing _02.png' );
+            const grimTex2 = new THREE.TextureLoader().load( './resources/Character_04/Walk.png' );
+
             function selectAvatar() {
                 const selectSreen = document.getElementById( 'CharacterSelect' );
 				selectSreen.remove();
@@ -104,15 +141,6 @@ import * as CLIENT from './Client.js'
 			    renderer.setSize( 960, 720 );
 			    document.body.appendChild( renderer.domElement );
 
-                //texture loading
-                const tex1 = new THREE.TextureLoader().load( './resources/OBbackground.png' );
-                const tex2 = new THREE.TextureLoader().load( './resources/bullet.png' );
-                const tex3 = new THREE.TextureLoader().load( './resources/pC.png' );
-                const tex4 = new THREE.TextureLoader().load( './resources/pCGun.png' );
-                const tex5 = new THREE.TextureLoader().load( './resources/pCGun2.png' );
-                const tex6 = new THREE.TextureLoader().load( './resources/pCJump.png' );
-                const tex7 = new THREE.TextureLoader().load( './resources/pCJump2.png' );
-                const tex8 = new THREE.TextureLoader().load( './resources/pCWalk.png' );
 
                 //sprite loading
                 const mBackground = new THREE.SpriteMaterial( {map: tex1} );
@@ -120,6 +148,7 @@ import * as CLIENT from './Client.js'
                 bgSprite.scale.set(48,36,1);
 
                 //load player
+                setPlayerTextures(avatar);
                 player1.setLeft(1);
                 player1.getSprite().position.set( 1, 0, 0);
                 player1.getSprite().scale.set(5,4,1);
@@ -147,6 +176,7 @@ import * as CLIENT from './Client.js'
                 window.addEventListener( 'keydown', function ( event ) {
                     switch ( event.key) {
                         case 'w': // w
+                        case 'W':
                         case 'ArrowUp': //up
                             if(gamefunctions.ladderUpCollision(player1.getSprite().position.z,player1.getSprite().position.y) == true){
                                 player1.setUp(1);
@@ -154,6 +184,7 @@ import * as CLIENT from './Client.js'
                             }
                             break;
                         case 'a': // a
+                        case 'A':
                         case 'ArrowLeft': //left
                             if(gamefunctions.usingLadder(player1.getSprite().position.y) == false){
                                 player1.setLeft(1);
@@ -161,6 +192,7 @@ import * as CLIENT from './Client.js'
                             }
                             break;
                         case 's': // s
+                        case 'S':
                         case 'ArrowDown': //down
                             if(gamefunctions.ladderDownCollision(player1.getSprite().position.z,player1.getSprite().position.y) == true){
                                 player1.setDown(1);
@@ -168,6 +200,7 @@ import * as CLIENT from './Client.js'
                             }
                             break;
                         case 'd': // d
+                        case 'D':
                         case 'ArrowRight': //right
                             if(gamefunctions.usingLadder(player1.getSprite().position.y) == false){
                                 player1.setRight(1);
@@ -237,8 +270,8 @@ import * as CLIENT from './Client.js'
                 }
                 if(p > 120 && player1.getLife()){
                     if(player1.getKeyPressRight()){
-                        if (player1.getTexture() == tex3 || player1.getTexture() == tex4){
-                            player1.setTexture(tex8);
+                        if (player1.getTexture() == tex3 || player1.getTexture() == tex5){
+                            player1.setTexture(tex4);
                             s1.play();
                         }else{
                             player1.setTexture(tex3);
@@ -248,8 +281,8 @@ import * as CLIENT from './Client.js'
                         player1.setKeysOff();
                     }
                     else if(player1.getKeyPressLeft()){
-                        if (player1.getTexture() == tex3 || player1.getTexture() == tex4){
-                            player1.setTexture(tex8);
+                        if (player1.getTexture() == tex3 || player1.getTexture() == tex5){
+                            player1.setTexture(tex4);
                             s1.play();
                         }else{
                             player1.setTexture(tex3);
@@ -263,7 +296,7 @@ import * as CLIENT from './Client.js'
                         if (player1.getTexture() != tex7){
                             player1.setTexture(tex7);
                         }else{
-                            player1.setTexture(tex6);
+                            player1.setTexture(tex8);
                         }
                         s4.play();
                         player1.setKeysOff();
@@ -273,19 +306,19 @@ import * as CLIENT from './Client.js'
                         if (player1.getTexture() != tex7){
                             player1.setTexture(tex7);
                         }else{
-                            player1.setTexture(tex6);
+                            player1.setTexture(tex8);
                         }
                         s4.play();
                         player1.setKeysOff();
                     }
                     else if(player1.getKeyPressSpace()){
                         let y;
-                        if(player1.getTexture() == tex3 || player1.getTexture() == tex4){
-                            player1.setTexture(tex4);
+                        if(player1.getTexture() == tex3 || player1.getTexture() == tex5){
+                            player1.setTexture(tex5);
                             y = 0.65;
                         }
-                        else if(player1.getTexture() == tex8 || player1.getTexture() == tex5){
-                            player1.setTexture(tex5);
+                        else if(player1.getTexture() == tex4 || player1.getTexture() == tex6){
+                            player1.setTexture(tex6);
                             y = 0.6;
                         }
                         if(player1.getRight()){
@@ -378,6 +411,45 @@ import * as CLIENT from './Client.js'
                 requestAnimationFrame(animate);
 			};
             animate(1);
+        }
+
+        function setPlayerTextures(id){
+            switch(id) {
+                case "Alex":
+                    tex3 = alexTex1;
+                    tex4 = alexTex2;
+                    tex5 = alexTex3;
+                    tex6 = alexTex4;
+                    tex7 = alexTex5;
+                    tex8 = alexTex6;
+                    break;
+                case "James":
+                    tex3 = jamesTex1;
+                    tex4 = jamesTex2;
+                    tex5 = jamesTex3;
+                    tex6 = jamesTex4;
+                    tex7 = jamesTex5;
+                    tex8 = jamesTex6;
+                  break;
+                case "Grim":
+                    tex3 = grimTex1;
+                    tex4 = grimTex2;
+                    tex5 = grimTex3;
+                    tex6 = grimTex4;
+                    tex7 = grimTex5;
+                    tex8 = grimTex6;
+                    break;
+                case "Cyrus":
+                    tex3 = cyrusTex1;
+                    tex4 = cyrusTex2;
+                    tex5 = cyrusTex3;
+                    tex6 = cyrusTex4;
+                    tex7 = cyrusTex5;
+                    tex8 = cyrusTex6;
+                    break;
+                default:
+                  // code block
+            }
         }
 
         function gameOver() {

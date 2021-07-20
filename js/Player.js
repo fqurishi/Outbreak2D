@@ -114,7 +114,7 @@ export const player = (() => {
         }
         damaged(a){
             if(this.getPain() <= 0){
-                this.setPain(2);
+                this.setPain(3);
             }
             this.#health = this.#health - a;
         }

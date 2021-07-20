@@ -33,43 +33,72 @@ import * as CLIENT from './Client.js'
             //controller inputs
             let spaceUp = true;
 
-            //misc textures loaded
+            //misc textures initializing
             const tex1 = new THREE.TextureLoader().load( './resources/OBbackground.png' );
             const tex2 = new THREE.TextureLoader().load( './resources/bullet.png' );
-            let tex3, tex4, tex5, tex6, tex7, tex8;
+            let tex3, tex4, tex5, tex6, tex7, tex8, tex9, tex10, tex11, tex12, tex13, tex14, tex15;
             
-            // character 1 texture loading
+            // character 1 texture initializing
             const jamesTex1 = new THREE.TextureLoader().load( './resources/Character_01/Stand.png' );
             const jamesTex3 = new THREE.TextureLoader().load( './resources/Character_01/Gun_Stand.png' );
             const jamesTex4 = new THREE.TextureLoader().load( './resources/Character_01/Gun_Walk.png' );
             const jamesTex5 = new THREE.TextureLoader().load( './resources/Character_01/Climbing _01.png' );
             const jamesTex6 = new THREE.TextureLoader().load( './resources/Character_01/Climbing _02.png' );
             const jamesTex2 = new THREE.TextureLoader().load( './resources/Character_01/Walk.png' );
+            const jamesTex7 = new THREE.TextureLoader().load( './resources/Character_01/Damage_01.png' );
+            const jamesTex8 = new THREE.TextureLoader().load( './resources/Character_01/Damage_02.png' );
+            const jamesTex9 = new THREE.TextureLoader().load( './resources/Character_01/Death_01.png' );
+            const jamesTex10 = new THREE.TextureLoader().load( './resources/Character_01/Death_02.png' );
+            const jamesTex11 = new THREE.TextureLoader().load( './resources/Character_01/Death_03.png' );
+            const jamesTex12 = new THREE.TextureLoader().load( './resources/Character_01/Death_04.png' );
+            const jamesTex13 = new THREE.TextureLoader().load( './resources/Character_01/Death_05.png' );
                             
-            // character 2 Texture loading
+            // character 2 Texture initializing
             const alexTex1 = new THREE.TextureLoader().load( './resources/Character_02/Stand.png' );
             const alexTex3 = new THREE.TextureLoader().load( './resources/Character_02/Gun_Stand.png' );
             const alexTex4 = new THREE.TextureLoader().load( './resources/Character_02/Gun_Walk.png' );
             const alexTex5 = new THREE.TextureLoader().load( './resources/Character_02/Climbing _01.png' );
             const alexTex6 = new THREE.TextureLoader().load( './resources/Character_02/Climbing _02.png' );
             const alexTex2 = new THREE.TextureLoader().load( './resources/Character_02/Walk.png' );
+            const alexTex7 = new THREE.TextureLoader().load( './resources/Character_02/Damage_01.png' );
+            const alexTex8 = new THREE.TextureLoader().load( './resources/Character_02/Damage_02.png' );
+            const alexTex9 = new THREE.TextureLoader().load( './resources/Character_02/Death_01.png' );
+            const alexTex10 = new THREE.TextureLoader().load( './resources/Character_02/Death_02.png' );
+            const alexTex11 = new THREE.TextureLoader().load( './resources/Character_02/Death_03.png' );
+            const alexTex12 = new THREE.TextureLoader().load( './resources/Character_02/Death_04.png' );
+            const alexTex13 = new THREE.TextureLoader().load( './resources/Character_02/Death_05.png' );
             
-            //character 3 texture loading
+            //character 3 texture initializing
             const cyrusTex1 = new THREE.TextureLoader().load( './resources/Character_03/Stand.png' );
             const cyrusTex3 = new THREE.TextureLoader().load( './resources/Character_03/Gun_Stand.png' );
             const cyrusTex4 = new THREE.TextureLoader().load( './resources/Character_03/Gun_Walk.png' );
             const cyrusTex5 = new THREE.TextureLoader().load( './resources/Character_03/Climbing _01.png' );
             const cyrusTex6 = new THREE.TextureLoader().load( './resources/Character_03/Climbing _02.png' );
             const cyrusTex2 = new THREE.TextureLoader().load( './resources/Character_03/Walk.png' );
+            const cyrusTex7 = new THREE.TextureLoader().load( './resources/Character_03/Damage_01.png' );
+            const cyrusTex8 = new THREE.TextureLoader().load( './resources/Character_03/Damage_02.png' );
+            const cyrusTex9 = new THREE.TextureLoader().load( './resources/Character_03/Death_01.png' );
+            const cyrusTex10 = new THREE.TextureLoader().load( './resources/Character_03/Death_02.png' );
+            const cyrusTex11 = new THREE.TextureLoader().load( './resources/Character_03/Death_03.png' );
+            const cyrusTex12 = new THREE.TextureLoader().load( './resources/Character_03/Death_04.png' );
+            const cyrusTex13 = new THREE.TextureLoader().load( './resources/Character_03/Death_05.png' );
         
-            //character 4 texture loading
+            //character 4 texture initializing
             const grimTex1 = new THREE.TextureLoader().load( './resources/Character_04/Stand.png' );
             const grimTex3 = new THREE.TextureLoader().load( './resources/Character_04/Gun_Stand.png' );
             const grimTex4 = new THREE.TextureLoader().load( './resources/Character_04/Gun_Walk.png' );
             const grimTex5 = new THREE.TextureLoader().load( './resources/Character_04/Climbing _01.png' );
             const grimTex6 = new THREE.TextureLoader().load( './resources/Character_04/Climbing _02.png' );
             const grimTex2 = new THREE.TextureLoader().load( './resources/Character_04/Walk.png' );
+            const grimTex7 = new THREE.TextureLoader().load( './resources/Character_04/Damage_01.png' );
+            const grimTex8 = new THREE.TextureLoader().load( './resources/Character_04/Damage_02.png' );
+            const grimTex9 = new THREE.TextureLoader().load( './resources/Character_04/Death_01.png' );
+            const grimTex10 = new THREE.TextureLoader().load( './resources/Character_04/Death_02.png' );
+            const grimTex11 = new THREE.TextureLoader().load( './resources/Character_04/Death_03.png' );
+            const grimTex12 = new THREE.TextureLoader().load( './resources/Character_04/Death_04.png' );
+            const grimTex13 = new THREE.TextureLoader().load( './resources/Character_04/Death_05.png' );
 
+            // selecting player's avatar
             function selectAvatar() {
                 const selectSreen = document.getElementById( 'CharacterSelect' );
 				selectSreen.remove();
@@ -349,18 +378,21 @@ import * as CLIENT from './Client.js'
                     }
                     for (let object of zombieObjects){
                         if(gamefunctions.isCollide(player1,object)){
-                            player1.damaged(1);
-                            if (player1.getHealth() <= 0){
-                                player1.setLife(false);
-                            }
+                            object.startAttack();
+                            if(object.getAttackFlag() == 1)
+                                player1.damaged();
+                        }
+                        if(object.getAttack() <= 4 && object.getAttack() > 0){
+                            object.attacking();
+                            object.setAttack(object.getAttack() - 1);
                         }
                     }
-                    if(player1.getPain() <= 2 && player1.getPain() > 0){
-                        player1.getSprite().material.color.set(red);
+                    if(player1.getPain() <= 3 && player1.getPain() > 0){
+                        if(player1.getTexture() != tex9)
+                            player1.setTexture(tex9);
+                        else
+                            player1.setTexture(tex10);
                         player1.setPain(player1.getPain() - 1);
-                    }
-                    else{
-                        player1.getSprite().material.color.set(white);
                     }
                     player1.updateDirection();
                     p = 0;
@@ -422,6 +454,13 @@ import * as CLIENT from './Client.js'
                     tex6 = alexTex4;
                     tex7 = alexTex5;
                     tex8 = alexTex6;
+                    tex9 = alexTex7
+                    tex10 = alexTex8
+                    tex11 = alexTex9
+                    tex12 = alexTex10
+                    tex13 = alexTex11
+                    tex14 = alexTex12
+                    tex15 = alexTex13
                     break;
                 case "James":
                     tex3 = jamesTex1;
@@ -430,6 +469,13 @@ import * as CLIENT from './Client.js'
                     tex6 = jamesTex4;
                     tex7 = jamesTex5;
                     tex8 = jamesTex6;
+                    tex9 = jamesTex7;
+                    tex10 = jamesTex8;
+                    tex11 = jamesTex9;
+                    tex12 = jamesTex10;
+                    tex13 = jamesTex11;
+                    tex14 = jamesTex12;
+                    tex15 = jamesTex13;
                   break;
                 case "Grim":
                     tex3 = grimTex1;
@@ -438,6 +484,13 @@ import * as CLIENT from './Client.js'
                     tex6 = grimTex4;
                     tex7 = grimTex5;
                     tex8 = grimTex6;
+                    tex9 = grimTex7;
+                    tex10 = grimTex8;
+                    tex11 = grimTex9;
+                    tex12 = grimTex10;
+                    tex13 = grimTex11;
+                    tex14 = grimTex12;
+                    tex15 = grimTex13;
                     break;
                 case "Cyrus":
                     tex3 = cyrusTex1;
@@ -446,6 +499,13 @@ import * as CLIENT from './Client.js'
                     tex6 = cyrusTex4;
                     tex7 = cyrusTex5;
                     tex8 = cyrusTex6;
+                    tex9 = cyrusTex7;
+                    tex10 = cyrusTex8;
+                    tex11 = cyrusTex9;
+                    tex12 = cyrusTex10;
+                    tex13 = cyrusTex11;
+                    tex14 = cyrusTex12;
+                    tex15 = cyrusTex13;
                     break;
                 default:
                   // code block

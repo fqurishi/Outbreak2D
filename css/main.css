@@ -85,7 +85,7 @@ a, button, input, select {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
+	flex-direction: row;
 	background: rgb(0, 0, 0);
 	}
 	
@@ -96,6 +96,9 @@ a, button, input, select {
 		border-radius: 4px;
 		color: #ffffff;
 		padding: 12px 18px;
+		margin: 10px;
+		display: inline-block;
+		text-align: center;
 		text-transform: uppercase;
 		cursor: pointer;
 	}

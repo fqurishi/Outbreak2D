@@ -7,6 +7,8 @@ import * as CLIENT from './Client.js'
 
             let scene, camera, renderer;
             let avatar;
+            //window
+            window.addEventListener( 'resize', onWindowResize, false ); 
             CLIENT.Main();
             const alexButton = document.getElementById('Alex');
             const jamesButton = document.getElementById('James');
@@ -26,6 +28,7 @@ import * as CLIENT from './Client.js'
             let lastRender = 0;
             let p = 0;
             let z = 0;
+            let b = 0;
             let red = new THREE.Color(0xFF0000);
             let white = new THREE.Color(0xFFFFFF);
             //spawn points for zombies later on in game when zombies appear from off screen
@@ -114,7 +117,7 @@ import * as CLIENT from './Client.js'
                 //camera and scene init
 			    scene = new THREE.Scene();
                 scene.background = new THREE.Color( 0x0000 );
-			    camera = new THREE.PerspectiveCamera( 100, 960 / 720, 1, 1000 );
+			    camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 800 );
                 camera.position.set( 15, 0, 0 );
 			    camera.lookAt( scene.position );
 
@@ -167,7 +170,7 @@ import * as CLIENT from './Client.js'
 
                 //render
 			    renderer = new THREE.WebGLRenderer();
-			    renderer.setSize( 960, 720 );
+			    renderer.setSize( window.innerWidth, window.innerHeight );
 			    document.body.appendChild( renderer.domElement );
 
 
@@ -237,7 +240,9 @@ import * as CLIENT from './Client.js'
                             }
                             break;
                         case ' ': //space
-                            if(player1.getAmmo() != 0 && spaceUp == true && s3.isPlaying != true){
+                            if(player1.getAmmo() != 0 && spaceUp == true && s3.isPlaying != true
+                            && gamefunctions.usingLadder(player1.getSprite().position.y) == false
+                            && (player1.getTexture() != tex7 && player1.getTexture() != tex8)){
                                 spaceUp = false;
                                 player1.shootGun();
                             }
@@ -259,8 +264,16 @@ import * as CLIENT from './Client.js'
             const tick = function(progress){
                 p += progress;
                 z += progress;
-                if(z > 200){
+                b += progress;
+                if (b > 15){
+                    for(let object of bulletObjects){
+                        object.update();
+                    }
+                    b = 0;
+                }
+                if(z > 180){
                     for(let object of zombieObjects){
+                    if(object.getLife()){
                         if(gamefunctions.ladderUpCollision(object.getSprite().position.z,object.getSprite().position.y) == true
                             && player1.getY() > object.getY() ){
                             object.setUp(1);
@@ -274,28 +287,48 @@ import * as CLIENT from './Client.js'
                         else{
                             if(gamefunctions.isSpriteOnFloor(object.getY())){
                                 object.setLadderOff();
-                                if (gamefunctions.sameFloor(object,player1) && object.getX() > player1.getX()){
+                                if (gamefunctions.sameFloor(object,player1) && object.getX() > player1.getX() && player1.getLife()){
                                     object.setRight(1);
+                                    object.setSpeed(0.85);
            
                                 }
-                                else if (gamefunctions.sameFloor(object,player1) && object.getX() < player1.getX()){
+                                else if (gamefunctions.sameFloor(object,player1) && object.getX() < player1.getX() && player1.getLife()){
                                     object.setLeft(1);
+                                    object.setSpeed(0.85);
         
                                 }
                                 else{
                                     object.setLeft(object.getRightOrLeft());
+                                    object.setSpeed(0.5);
                                 }
                             }
-                            object.update();
-                            object.updateDirection();
+                            if((!gamefunctions.isCollide(player1,object) || !player1.getLife()
+                            || object.isAttacking() == false)
+                            && (object.getPain() <= 0)){
+                                object.update();
+                            }
                             object.setState(!object.getState());
                             if(object.getRespawn() == 1){
                                 object.setSpawnPoint();
                                 object.setRespawn(0);
                             }
+                            if(object.isAttacking() == true){
+                                object.attacking();
+                                object.setAttack(object.getAttack() - 1);
+                            }
+                            if(object.getPain() <= 3 && object.getPain() > 0)
+                                object.damage();
+                        }
+                        object.updateDirection();
+                    }
+                    else{
+                        object.death();
+                        if(gamefunctions.isSpriteOnFloor(object.getSprite().position.y) == false){
+                            object.translateY(-1);
                         }
                     }
                     z = 0;
+                    }
                 }
                 if(p > 120 && player1.getLife()){
                     if(player1.getKeyPressRight()){
@@ -346,14 +379,15 @@ import * as CLIENT from './Client.js'
                             player1.setTexture(tex5);
                             y = 0.65;
                         }
-                        else if(player1.getTexture() == tex4 || player1.getTexture() == tex6){
+                        else if(player1.getTexture() == tex4 || player1.getTexture() == tex6
+                        || player1.getTexture() == tex9 || player1.getTexture() == tex10){
                             player1.setTexture(tex6);
                             y = 0.6;
                         }
                         if(player1.getRight()){
                             player1.shotGun();
                             s3.play();
-                            bullet1 = new bullet.Bullet(player1.getSprite().position.z-0.75,player1.getSprite().position.y+y);
+                            bullet1 = new bullet.Bullet(player1.getSprite().position.z-1.25,player1.getSprite().position.y+y);
                             bullet1.getSprite().position.setX(1);
                             bullet1.getSprite().scale.set(0.2,0.1,1);
                             bullet1.setTexture(tex2);
@@ -366,7 +400,7 @@ import * as CLIENT from './Client.js'
                         else if(player1.getLeft){
                             player1.shotGun();
                             s3.play();
-                            bullet1 = new bullet.Bullet(player1.getSprite().position.z+0.75,player1.getSprite().position.y+y);
+                            bullet1 = new bullet.Bullet(player1.getSprite().position.z+1.25,player1.getSprite().position.y+y);
                             bullet1.getSprite().position.setX(1);
                             bullet1.getSprite().scale.set(0.2,0.1,1);
                             bullet1.setTexture(tex2);
@@ -382,20 +416,46 @@ import * as CLIENT from './Client.js'
                             if(object.getAttackFlag() == 1)
                                 player1.damaged();
                         }
-                        if(object.getAttack() <= 4 && object.getAttack() > 0){
-                            object.attacking();
-                            object.setAttack(object.getAttack() - 1);
-                        }
                     }
                     if(player1.getPain() <= 3 && player1.getPain() > 0){
-                        if(player1.getTexture() != tex9)
+                        if(player1.getTexture() == tex3 || player1.getTexture() == tex4
+                        || player1.getTexture() == tex8 || player1.getTexture() == tex7
+                        || player1.getTexture() == tex5 || player1.getTexture() == tex6
+                        && !player1.isShooting())
                             player1.setTexture(tex9);
-                        else
+                        else if (player1.getTexture() == tex9 && !player1.isShooting())
                             player1.setTexture(tex10);
+                        else
+                            if (player1.isShooting())
+                                player1.setTexture(tex5);
+                            else
+                                player1.setTexture(tex3);
                         player1.setPain(player1.getPain() - 1);
                     }
+                    else{
+                        if(player1.getTexture() == tex9 || player1.getTexture() == tex10)
+                            player1.setTexture(tex4);
+                    }
+                    player1.holster();
                     player1.updateDirection();
                     p = 0;
+                }else if ( p > 120 && !player1.getLife()){
+                    if (player1.getTexture() != tex11 && player1.getTexture() != tex12
+                        && player1.getTexture() != tex13 && player1.getTexture() != tex14
+                        && player1.getTexture() != tex15)
+                        player1.setTexture(tex11);
+                    else if (player1.getTexture() == tex11)
+                        player1.setTexture(tex12);
+                    else if (player1.getTexture() == tex12)
+                        player1.setTexture(tex13);
+                    else if (player1.getTexture() == tex13)
+                        player1.setTexture(tex14);
+                    else if (player1.getTexture() == tex14)
+                        player1.setTexture(tex15);
+                    p = 0;
+                    if(gamefunctions.isSpriteOnFloor(player1.getSprite().position.y) == false){
+                        player1.translateY(-1);
+                    }
                 }
             }
 
@@ -403,36 +463,34 @@ import * as CLIENT from './Client.js'
             const animate = function (timestamp) {
                 let progress = timestamp - lastRender;
                 for(let object of bulletObjects){
-                    object.update();
-                    for(let objectsZ of zombieObjects){
-                        if(gamefunctions.isCollide(objectsZ, object)){
-                            objectsZ.setLife(0);
+                    for (let zObject of zombieObjects){
+                        if(gamefunctions.isCollide(object,zObject) && zObject.getLife()){
                             object.setLife(0);
+                            zObject.activateDamage();
                         }
                     }
                     if(object.getLife() == false){
                         scene.remove(object.getSprite());
                         object.getSprite().material.dispose();
-                        object.setY(1000);
-                        object.setX(1000);
-                        object = undefined;
+                        for( let i = 0; i < bulletObjects.length; i++){ 
+                            if ( bulletObjects[i] == object) { 
+                                bulletObjects.splice(i, 1); 
+                            }
+                        
+                        }
                     }
                 }
                 for (let object of zombieObjects){
                     gamefunctions.setSpriteFloor(object.getSprite(),object.getY());
-                    if(object.getLife() == false){
-                        scene.remove(object.getSprite());
-                        object.getSprite().material.dispose();
-                        object.setY(1000);
-                        object.setX(1000);
-                        object = undefined;
+                    if(object.getLife() == false && object.getDeathFlag()){
+                        for( let i = 0; i < zombieObjects.length; i++){ 
+                            if ( zombieObjects[i] == object) { 
+                                zombieObjects.splice(i, 1); 
+                            }
+                        }
                     }
                 }
                 if(player1.getLife() == false){
-                    scene.remove(player1.getSprite());
-                    player1.getSprite().material.dispose();
-                    player1.setY(1000);
-                    player1.setX(1000);
                     gameOver();
                 }
                 
@@ -515,5 +573,13 @@ import * as CLIENT from './Client.js'
         function gameOver() {
             document.getElementById("gameover").style.display = "block";
           }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        
+        }
 
 		

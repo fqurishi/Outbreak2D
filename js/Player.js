@@ -16,6 +16,7 @@ export const player = (() => {
         #isRight;
         #pain;
         #pressedKeys;
+        #shotFlag;
         constructor(){
             super();
             this.#left = true;
@@ -24,8 +25,8 @@ export const player = (() => {
             this.#down = false;
             this.#width = null;
             this.#height = null;
-            this.#ammo = 9;
-            this.#health = 30;
+            this.#ammo = 16;
+            this.#health = 15;
             this.#pressedKeys = {left: false, right: false, up: false, down: false, space: false};
             this.setX(1);
             this.setY(0);
@@ -112,14 +113,22 @@ export const player = (() => {
             this.#ammo = this.getAmmo() - 1;
 
         }
-        damaged(a){
+        damaged(){
             if(this.getPain() <= 0){
                 this.setPain(3);
             }
-            this.#health = this.#health - a;
+            this.#health = this.#health - 1;
+            if(this.getHealth() <= 0){
+                this.setLife(false);
+            }
+            console.log(this.#health);
         }
         shotGun(){
             this.#pressedKeys['space'] = false;
+            this.#shotFlag = true;
+        }
+        isShooting(){
+            return this.#shotFlag;
         }
         setKeysOff(){
             this.#pressedKeys['right'] = false;
@@ -157,6 +166,7 @@ export const player = (() => {
                 this.#pressedKeys['up'] = false;
             }
 
+
         }
         updateDirection(){
             if(this.getLeft()){
@@ -167,6 +177,9 @@ export const player = (() => {
                 this.getTexture().center.set( 0.5, 0.5 );
                 this.getTexture().repeat.set( -1, 1 );
             }
+        }
+        holster(){
+            this.#shotFlag = false;
         }
 
 

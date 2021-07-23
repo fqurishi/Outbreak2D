@@ -43,6 +43,9 @@ export const bullet = (() => {
                 this.setBulletDirection(1);
             }
             this.translateX(this.#bulletDirection)
+            if (this.getX() >= 22 || this.getX() <= -22){
+                this.setLife(false);
+            }
         }
 
 

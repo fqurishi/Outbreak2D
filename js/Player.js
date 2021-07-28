@@ -17,6 +17,7 @@ export const player = (() => {
         #pain;
         #pressedKeys;
         #shotFlag;
+        #bulletR;
         constructor(){
             super();
             this.#left = true;
@@ -32,7 +33,14 @@ export const player = (() => {
             this.setY(0);
             this.setName("Player");
             this.setR(0.4);
+            this.setBulletR(2);
             this.setPain(0);
+        }
+        getBulletR(){
+            return this.#bulletR;
+        }
+        setBulletR(a){
+            this.#bulletR = a;
         }
         getPain(){
             return this.#pain;

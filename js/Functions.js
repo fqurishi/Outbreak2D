@@ -146,7 +146,24 @@ export const gamefunctions = (function() {
       let dy = a.getY() - b.getY();
       let distance = Math.sqrt(dx * dx + dy * dy);
 
+
       if (distance < a.getR() + b.getR()) {
+      // collision detected!
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+    },
+
+    isBulletCollide: function(a, b) {
+      let dx = a.getX() - b.getX();
+      let dy = a.getY() - b.getY();
+      let distance = Math.sqrt(dx * dx + dy * dy);
+
+      
+      if (distance < a.getR() + b.getBulletR()) {
       // collision detected!
         return true;
       }

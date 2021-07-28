@@ -3,16 +3,16 @@ import {player} from './Player.js'
 import {bullet} from './Bullet.js'
 import {zombie} from './Zombie.js'
 import {gamefunctions} from './Functions.js'
-import * as CLIENT from './Client.js'
+import {ghostAvatar} from './GhostAvatar.js'
+import {CLIENT} from './Client.js'
 
             let scene, camera, renderer;
             let avatar;
             //window
             window.addEventListener( 'resize', onWindowResize, false ); 
-            CLIENT.Main();
-            const alexButton = document.getElementById('Alex');
-            const jamesButton = document.getElementById('James');
-            const cyrusButton = document.getElementById('Cyrus');
+            const alexButton = document.getElementById('Rigo');
+            const jamesButton = document.getElementById('Jaece');
+            const cyrusButton = document.getElementById('Brayden');
             const grimButton = document.getElementById('Grim');
             const startButton = document.getElementById('startButton');
             alexButton.addEventListener('click', selectAvatar);
@@ -21,6 +21,7 @@ import * as CLIENT from './Client.js'
             grimButton.addEventListener('click', selectAvatar);
             startButton.addEventListener('click', init);
             let player1 = new player.Player();
+            let ghostPlayers = new Array();
             let bullet1;
             let zombie1;
             let bulletObjects = new Array();
@@ -29,8 +30,7 @@ import * as CLIENT from './Client.js'
             let p = 0;
             let z = 0;
             let b = 0;
-            let red = new THREE.Color(0xFF0000);
-            let white = new THREE.Color(0xFFFFFF);
+            let gP = 0;
             //spawn points for zombies later on in game when zombies appear from off screen
             let spawnPoint = [-21, 21];
             //controller inputs
@@ -112,7 +112,12 @@ import * as CLIENT from './Client.js'
             function init() {
                 const overlay = document.getElementById( 'overlay' );
 				overlay.remove();
-
+                //socket connection
+                let clientConnection = new CLIENT.ConnectionClient();
+                //client connecting
+                clientConnection.Main();
+                //client joining in
+                clientConnection.sendJoinMessage(avatar);
 
                 //camera and scene init
 			    scene = new THREE.Scene();
@@ -185,12 +190,15 @@ import * as CLIENT from './Client.js'
                 player1.getSprite().position.set( 1, 0, 0);
                 player1.getSprite().scale.set(5,4,1);
                 player1.setTexture(tex3);
+
+                //add to scene
                 scene.add(bgSprite);
                 scene.add(player1.getSprite());
 
                 //load zombies
                 //create zombies and set them up
-                for(let i=0;i<10;i++){
+                //single player only, being commented out for now
+                /*for(let i=0;i<10;i++){
                     zombie1 = new zombie.Zombie();
 		            //give zombies their texture
                     zombie1.getSprite().position.setX(1);
@@ -202,9 +210,9 @@ import * as CLIENT from './Client.js'
 		            //put the zombies into the zombie list
                     zombieObjects.push(zombie1);
                     scene.add(zombie1.getSprite());
-                }
+                }*/
 
-
+                //controls
                 window.addEventListener( 'keydown', function ( event ) {
                     switch ( event.key) {
                         case 'w': // w
@@ -260,11 +268,12 @@ import * as CLIENT from './Client.js'
                 }
                 );
 
-            //game tick
+            //game tick basically the gameloop minus "animation"
             const tick = function(progress){
                 p += progress;
                 z += progress;
                 b += progress;
+                gP += progress;
                 if (b > 15){
                     for(let object of bulletObjects){
                         object.update();
@@ -334,9 +343,11 @@ import * as CLIENT from './Client.js'
                     if(player1.getKeyPressRight()){
                         if (player1.getTexture() == tex3 || player1.getTexture() == tex5){
                             player1.setTexture(tex4);
+                            clientConnection.sendTexture(avatar, 2);
                             s1.play();
                         }else{
                             player1.setTexture(tex3);
+                            clientConnection.sendTexture(avatar, 1);
                             s2.play();
                         }
                         player1.translateX(-1);
@@ -345,9 +356,11 @@ import * as CLIENT from './Client.js'
                     else if(player1.getKeyPressLeft()){
                         if (player1.getTexture() == tex3 || player1.getTexture() == tex5){
                             player1.setTexture(tex4);
+                            clientConnection.sendTexture(avatar, 2);
                             s1.play();
                         }else{
                             player1.setTexture(tex3);
+                            clientConnection.sendTexture(avatar, 1);
                             s2.play();
                         }
                         player1.translateX(1);
@@ -355,20 +368,26 @@ import * as CLIENT from './Client.js'
                     }
                     else if(player1.getKeyPressUp()){
                         player1.translateY(1);
+                        clientConnection.sendPosition(avatar,player1.getX(),player1.getY());
                         if (player1.getTexture() != tex7){
                             player1.setTexture(tex7);
+                            clientConnection.sendTexture(avatar, 5);
                         }else{
                             player1.setTexture(tex8);
+                            clientConnection.sendTexture(avatar, 6);
                         }
                         s4.play();
                         player1.setKeysOff();
                     }
                     else if(player1.getKeyPressDown()){
                         player1.translateY(-1);
+                        clientConnection.sendPosition(avatar,player1.getX(),player1.getY());
                         if (player1.getTexture() != tex7){
                             player1.setTexture(tex7);
+                            clientConnection.sendTexture(avatar, 5);
                         }else{
                             player1.setTexture(tex8);
+                            clientConnection.sendTexture(avatar, 6);
                         }
                         s4.play();
                         player1.setKeysOff();
@@ -377,14 +396,17 @@ import * as CLIENT from './Client.js'
                         let y;
                         if(player1.getTexture() == tex3 || player1.getTexture() == tex5){
                             player1.setTexture(tex5);
+                            clientConnection.sendTexture(avatar, 3);
                             y = 0.65;
                         }
                         else if(player1.getTexture() == tex4 || player1.getTexture() == tex6
                         || player1.getTexture() == tex9 || player1.getTexture() == tex10){
                             player1.setTexture(tex6);
+                            clientConnection.sendTexture(avatar, 4);
                             y = 0.6;
                         }
                         if(player1.getRight()){
+                            clientConnection.sendPosition(avatar,player1.getX(),player1.getY(), "right");
                             player1.shotGun();
                             s3.play();
                             bullet1 = new bullet.Bullet(player1.getSprite().position.z-1.25,player1.getSprite().position.y+y);
@@ -395,9 +417,11 @@ import * as CLIENT from './Client.js'
                             scene.add(bullet1.getSprite());
                             bullet1.setRight(1);
                             bullet1.update();
+                            clientConnection.sendBullet(avatar,bullet1.getX(),bullet1.getY(),"right");
 
                         }
                         else if(player1.getLeft){
+                            clientConnection.sendPosition(avatar,player1.getX(),player1.getY(), "left");
                             player1.shotGun();
                             s3.play();
                             bullet1 = new bullet.Bullet(player1.getSprite().position.z+1.25,player1.getSprite().position.y+y);
@@ -408,6 +432,7 @@ import * as CLIENT from './Client.js'
                             scene.add(bullet1.getSprite());
                             bullet1.setLeft(1);
                             bullet1.update();
+                            clientConnection.sendBullet(avatar,bullet1.getX(),bullet1.getY(),"left");
                         }
                     }
                     for (let object of zombieObjects){
@@ -421,41 +446,71 @@ import * as CLIENT from './Client.js'
                         if(player1.getTexture() == tex3 || player1.getTexture() == tex4
                         || player1.getTexture() == tex8 || player1.getTexture() == tex7
                         || player1.getTexture() == tex5 || player1.getTexture() == tex6
-                        && !player1.isShooting())
+                        && !player1.isShooting()){
                             player1.setTexture(tex9);
-                        else if (player1.getTexture() == tex9 && !player1.isShooting())
+                            clientConnection.sendTexture(avatar, 7);
+                        }
+                        else if (player1.getTexture() == tex9 && !player1.isShooting()){
                             player1.setTexture(tex10);
-                        else
-                            if (player1.isShooting())
+                            clientConnection.sendTexture(avatar, 8);
+                        }
+                        else{
+                            if (player1.isShooting()){
                                 player1.setTexture(tex5);
-                            else
+                                clientConnection.sendTexture(avatar, 3);
+                            }
+                            else{
                                 player1.setTexture(tex3);
+                                clientConnection.sendTexture(avatar, 1);
+                            }
+                        }
                         player1.setPain(player1.getPain() - 1);
                     }
                     else{
-                        if(player1.getTexture() == tex9 || player1.getTexture() == tex10)
+                        if(player1.getTexture() == tex9 || player1.getTexture() == tex10){
                             player1.setTexture(tex4);
+                            clientConnection.sendTexture(avatar, 2);
+                        }
                     }
+                    if(player1.getRight())
+                        clientConnection.sendPosition(avatar,player1.getX(),player1.getY(), "right");
+                    else if (player1.getLeft())
+                        clientConnection.sendPosition(avatar,player1.getX(),player1.getY(), "left");
                     player1.holster();
                     player1.updateDirection();
                     p = 0;
                 }else if ( p > 120 && !player1.getLife()){
                     if (player1.getTexture() != tex11 && player1.getTexture() != tex12
                         && player1.getTexture() != tex13 && player1.getTexture() != tex14
-                        && player1.getTexture() != tex15)
+                        && player1.getTexture() != tex15){
                         player1.setTexture(tex11);
-                    else if (player1.getTexture() == tex11)
+                        clientConnection.sendTexture(avatar, 9);
+                        }
+                    else if (player1.getTexture() == tex11){
                         player1.setTexture(tex12);
-                    else if (player1.getTexture() == tex12)
+                        clientConnection.sendTexture(avatar, 10);
+                    }
+                    else if (player1.getTexture() == tex12){
                         player1.setTexture(tex13);
-                    else if (player1.getTexture() == tex13)
+                        clientConnection.sendTexture(avatar, 11);
+                    }
+                    else if (player1.getTexture() == tex13){
                         player1.setTexture(tex14);
-                    else if (player1.getTexture() == tex14)
+                        clientConnection.sendTexture(avatar, 12);
+                    }
+                    else if (player1.getTexture() == tex14){
                         player1.setTexture(tex15);
+                        clientConnection.sendTexture(avatar, 13);
+                    }
                     p = 0;
                     if(gamefunctions.isSpriteOnFloor(player1.getSprite().position.y) == false){
                         player1.translateY(-1);
+                        clientConnection.sendPosition(avatar,player1.getX(),player1.getY());
                     }
+                    clientConnection.playerHasDied(avatar);
+                }
+                //ghost player loop
+                if(gP > 120){
                 }
             }
 
@@ -468,6 +523,15 @@ import * as CLIENT from './Client.js'
                             object.setLife(0);
                             zObject.activateDamage();
                         }
+                    }
+                    for (let gObject of ghostPlayers){
+                        if(gamefunctions.isBulletCollide(object,gObject) && gObject.getLife()){
+                            object.setLife(0);
+                        }
+                    }
+                    if(gamefunctions.isBulletCollide(object,player1) && player1.getLife()){
+                        object.setLife(0);
+                        player1.damaged();
                     }
                     if(object.getLife() == false){
                         scene.remove(object.getSprite());
@@ -505,7 +569,7 @@ import * as CLIENT from './Client.js'
 
         function setPlayerTextures(id){
             switch(id) {
-                case "Alex":
+                case "Rigo":
                     tex3 = alexTex1;
                     tex4 = alexTex2;
                     tex5 = alexTex3;
@@ -520,7 +584,7 @@ import * as CLIENT from './Client.js'
                     tex14 = alexTex12
                     tex15 = alexTex13
                     break;
-                case "James":
+                case "Jaece":
                     tex3 = jamesTex1;
                     tex4 = jamesTex2;
                     tex5 = jamesTex3;
@@ -550,7 +614,7 @@ import * as CLIENT from './Client.js'
                     tex14 = grimTex12;
                     tex15 = grimTex13;
                     break;
-                case "Cyrus":
+                case "Brayden":
                     tex3 = cyrusTex1;
                     tex4 = cyrusTex2;
                     tex5 = cyrusTex3;
@@ -581,5 +645,79 @@ import * as CLIENT from './Client.js'
             renderer.setSize( window.innerWidth, window.innerHeight );
         
         }
+        export const game = (function() {
+            return {
+                addGhostAvatar(a){
+                    console.log("a player has joined your game");
+                    let newPlayer = new ghostAvatar.GhostAvatar(a);
+                    newPlayer.getSprite().position.set( 1, 0, 0);
+                    newPlayer.getSprite().scale.set(5,4,1);
+                    newPlayer.setTexture(newPlayer.tex3);
+                    scene.add(newPlayer.getSprite());
+                    ghostPlayers.push(newPlayer);
+                },
+                getPlayerAvatar(){
+                    return avatar;
+                },
+                updateGhostAvatarPosition(a,x,y,d){
+                    for (let object of ghostPlayers){
+                        if (object.getAvatar() == a){
+                            object.setX(x);
+                            object.setY(y);
+                            object.setTextureDirection(d);
+                        }
+                    }
+                },
+                updateGhostAvatarTexture(a,b){
+                    for(let object of ghostPlayers){
+                        if(object.getAvatar() == a){
+                            object.setTexture(object.setTextureState(b));
+                        }
+                    }
+                },
+                shootOtherPlayerGun(a,x,y,d){
+                    for(let object of ghostPlayers){
+                        if(object.getAvatar() == a){
+                            let bullet2 = new bullet.Bullet(x,y);
+                            bullet2.getSprite().position.setX(1);
+                            bullet2.getSprite().scale.set(0.2,0.1,1);
+                            bullet2.setTexture(tex2);
+                            bulletObjects.push(bullet2);
+                            scene.add(bullet2.getSprite());
+                            if (d == 'right'){
+                                bullet2.setRight(1);
+                            }
+                            else if (d == 'left'){
+                                bullet2.setLeft(1);
+                            }
+                            bullet2.update();
+                        }
+                    }
+                },
+                createZombies(x){
+                    for(let i=0;i<x;i++){
+                        zombie1 = new zombie.Zombie();
+                        //give zombies their texture
+                        zombie1.getSprite().position.setX(1);
+                        zombie1.getSprite().scale.set(5,4,1);
+                        //make sure zombies dont spawn on players position
+                        if(zombie1.getX() == player1.getX() && zombie1.getY() == player1.getY()){
+                            zombie1.setX(Math.floor(Math.random() * 43)-21.5);
+                        }
+                        //put the zombies into the zombie list
+                        zombieObjects.push(zombie1);
+                        scene.add(zombie1.getSprite());
+                    }
+                },
+                killOtherPlayer(a){
+                    for(let object of ghostPlayers){
+                        if(object.getAvatar() == a){
+                            object.setLife(false);
+                        }
+                    }
+                }
+
+            };
+        })();
 
 		

@@ -21,6 +21,10 @@ button {
 	cursor: pointer;
 	text-transform: uppercase;
 }
+@font-face {
+    font-family: "Pixel Font";
+    src: url("../fonts/Pixeboy-z8XGD.ttf");
+}
 
 #info {
 	position: absolute;
@@ -62,13 +66,11 @@ a, button, input, select {
 	justify-content: center;
 	flex-direction: column;
 	background: rgba(0,0,0,0.7);
+	font-family: 'Pixel Font';
 }
 
 	#overlay button {
 		background: transparent;
-		border: 0;
-		border: 1px solid rgb(255, 255, 255);
-		border-radius: 4px;
 		color: #ffffff;
 		padding: 12px 18px;
 		text-transform: uppercase;
@@ -87,13 +89,11 @@ a, button, input, select {
 	justify-content: center;
 	flex-direction: row;
 	background: rgb(0, 0, 0);
+	font-family: 'Pixel Font';
 	}
 	
 	#CharacterSelect button {
 		background: transparent;
-		border: 0;
-		border: 1px solid rgb(255, 255, 255);
-		border-radius: 4px;
 		color: #ffffff;
 		padding: 12px 18px;
 		margin: 10px;
@@ -102,6 +102,10 @@ a, button, input, select {
 		text-transform: uppercase;
 		cursor: pointer;
 	}
+	#CharacterSelect button:hover {
+		background-color: grey;
+		color: white;
+	  }
 
 #notSupported {
 	width: 50%;

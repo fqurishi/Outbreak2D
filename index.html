@@ -6,30 +6,88 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link type="text/css" rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="fonts/Pixeboy-z8XGD.ttf" />
 </head>
 <style>
+@font-face {
+    font-family: "Pixel Font";
+    src: url("./fonts/Pixeboy-z8XGD.ttf");
+}
 .tablink { background-color: #000; color: white; }
 .tablink:hover { background-color: #3E3D3D; }
-#gameover {
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 2;
-}
-#text{
+#title{
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 50px;
+  font-size: 75px;
+  font-family: 'Pixel Font';
   color: white;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
+}
+#title2{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 75px;
+  font-family: 'Pixel Font';
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#title2 button {
+		background: transparent;
+        font-size: 25px;
+		color: #ffffff;
+        background-color: black;
+		padding: 12px 18px;
+		margin: 10px;
+		display: inline-block;
+		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+    #title2 button:hover {
+        background-color: grey;
+        color: white;
+    }
+    #title2 text {
+		color: #ffffff;
+		display: inline-block;
+		text-align: center;
+		text-transform: uppercase;
+	}
+#text{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  font-size: 25px;
+  font-family: 'Pixel Font';
+  background-color: black;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+@keyframes glowing {
+    0% {
+        background-color: white;
+        box-shadow: 0 0 5px white;
+    }
+    50% {
+        background-color: #8d8f8c;
+         box-shadow: 0 0 20px #8d8f8c;
+    }
+    100% {
+        background-color: black;
+        box-shadow: 0 0 5px rgb(51, 51, 51);
+    }
+}
+#text{
+    animation: glowing 2500ms infinite;
 }
 #selecttext{
   position: absolute;
@@ -41,6 +99,7 @@
   -ms-transform: translate(-50%,-50%);
 }
 
+
 </style>
 <body>
 	<!-- Navbar -->
@@ -48,7 +107,16 @@
 		<a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
 		<button class="tablink" onclick="window.location.href='../';">HOME</button>
 	</div>
-  <!-- Overlay -->
+        <div id="title">OUTBREAK</div>
+        <button id="text">Enter</button> 
+    <div id="title2">
+    <text>OUTBREAK</text>
+    <br>
+    <button id="SINGLE PLAYER">SINGLE PLAYER</button>
+    <button id="MULTI PLAYER">MULTI PLAYER</button>
+    <button id="OPTIONS">OPTIONS</button>
+    </div>
+      <!-- Overlay -->
   <div id="overlay">
     <button id="startButton">Play</button>
   </div>
@@ -65,16 +133,7 @@
     <button id="Brayden">Brayden</button>
     <button id="Grim">Grim</button>
 	</div> 
-	<!-- GameOver-->
-	<div id="gameover">
-    <!-- Navbar -->
-	  <div class="w3-top">
-		  <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
-		  <button class="tablink" onclick="window.location.href='../';">HOME</button>
-	  </div>
-		<div id="text">Game Over</div>
-	</div>
-	<script src="./js/main.js" type="module">
-	</script>
+    <script src="./js/StartMenu.js" type="module">
+    </script>
 </body>
 </html>

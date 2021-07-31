@@ -20,6 +20,11 @@ import {CLIENT} from './Client.js'
             cyrusButton.addEventListener('click', selectAvatar);
             grimButton.addEventListener('click', selectAvatar);
             startButton.addEventListener('click', init);
+            alexButton.addEventListener('ontouch', selectAvatar);
+            jamesButton.addEventListener('ontouch', selectAvatar);
+            cyrusButton.addEventListener('ontouch', selectAvatar);
+            grimButton.addEventListener('ontouch', selectAvatar);
+            startButton.addEventListener('ontouch', init);
             let player1 = new player.Player();
             let ghostPlayers = new Array();
             let bullet1;

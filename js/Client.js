@@ -44,7 +44,7 @@ export const CLIENT = (() => {
     this.socket.on("connect", () => {
       console.log("connecting");
       this.socket.emit('connection');
-      $this.makeZombies(0);
+      $this.makeZombies(10);
     });
   }
   updateGhostPosition(a,x,y,d){

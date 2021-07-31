@@ -36,7 +36,6 @@ audioLoader.load( './resources/Enter.wav', function( buffer ) {
     bgm.setBuffer( buffer );
     bgm.setLoop( false );
     bgm.setVolume( 0.5 );
-    //bgm.play();
 }
 );
 
@@ -53,12 +52,8 @@ function selectMenu(){
         case "SINGLE PLAYER":
             characterSelect.style.display = 'flex';
             startSelect.style.display = 'flex';
-           //MAIN();
             break;
         case "MULTI PLAYER":
-            characterSelect.style.display = 'flex';
-            startSelect.style.display = 'flex';
-            //MAIN();
             break;
         case "OPTIONS":
             break;

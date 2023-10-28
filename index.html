@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link type="text/css" rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="fonts/Pixeboy-z8XGD.ttf">
+  <style>
+    @font-face {
+      font-family: "Pixel Font";
+      src: url("./fonts/Pixeboy-z8XGD.ttf");
+    }
+  </style>
+  <title>Outbreak Online (JS)</title>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="w3-top">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
+    <button class="tablink" onclick="window.location.href='../';">HOME</button>
+  </div>
+  
+  <!-- START SCREEN -->
+  <div id="title">OUTBREAK 2D</div>
+  <button id="text">Enter</button>
+
+  <!-- MAIN MENU -->
+  <div id="title2">
+    <text>OUTBREAK 2D</text>
+    <br>
+    <button id="SINGLE PLAYER">SINGLE PLAYER</button>
+    <button id="MULTI PLAYER">MULTI PLAYER</button>
+    <button id="OPTIONS">OPTIONS</button>
+  </div>
+
+  <!-- OPTIONS -->
+  <div id="options">
+    <text>TO PLAY GAME:
+      <br>
+      WASD = MOVEMENT
+      <br>
+      SPACE-BAR = GUN FIRE
+      <br>
+      <br>
+      SET VOLUME:
+    </text>
+    <div class="slidecontainer">
+      <input type="range" min="0" max="10" value="5" id="volume">
+    </div>
+    <button id="backButton">BACK</button>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay">
+    <button id="startButton">Play</button>
+  </div>
+
+  <!-- Character Select -->
+  <div id="CharacterSelect">
+    <!-- Navbar -->
+    <div class="w3-top">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
+      <button class="tablink" onclick="window.location.href='../';">HOME</button>
+    </div>
+    <div id="selecttext">Select Character</div>
+    <button id="Jaece">Jaece</button>
+    <button id="Rigo">Rigo</button>
+    <button id="Brayden">Brayden</button>
+    <button id="Grim">Grim</button>
+  </div>
+
+  <!-- HOST OR JOIN SELECT -->
+  <div id="hostOrJoinSelect">
+    <!-- Navbar -->
+    <div class="w3-top">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
+      <button class="tablink" onclick="window.location.href='../';">HOME</button>
+    </div>
+    <div id="selecttext">JOIN OR HOST</div>
+    <button id="host">host</button>
+    <button id="join">join</button>
+  </div>
+
+  <!-- SERVER SELECT -->
+  <div id="ServerSelect">
+    <!-- Navbar -->
+    <div class="w3-top">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
+      <button class="tablink" onclick="window.location.href='../';">HOME</button>
+    </div>
+    <div id="selecttext">Select Server</div>
+    <button id="server1">server 1</button>
+    <button id="server2">server 2</button>
+    <button id="server3">server 3</button>
+    <button id="server4">server 4</button>
+  </div>
+
+  <!-- GameOver -->
+  <div id="gameover">
+    <!-- Navbar -->
+    <div class="w3-top">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" title="Toggle Navigation Menu"></a>
+      <button class="tablink" onclick="window.location.href='../';">HOME</button>
+    </div>
+    <div id="overText">Game Over</div>
+  </div>
+
+  <script src="./js/StartMenu.js" type="module"></script>
+</body>
+</html>
+

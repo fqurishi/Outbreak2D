@@ -72,10 +72,15 @@ a, button, input, select {
 	#overlay button {
 		background: transparent;
 		color: #ffffff;
-		padding: 12px 18px;
 		text-transform: uppercase;
+		padding: 20px;
+		font-size: 25px;
 		cursor: pointer;
 	}
+	#overlay button:hover {
+		background-color: grey;
+		color: white;
+	  }
 #CharacterSelect {
 	position: absolute;
 	font-size: 16px;
@@ -95,7 +100,6 @@ a, button, input, select {
 	#CharacterSelect button {
 		background: transparent;
 		color: #ffffff;
-		padding: 12px 18px;
 		margin: 10px;
 		display: inline-block;
 		text-align: center;
@@ -106,6 +110,64 @@ a, button, input, select {
 		background-color: grey;
 		color: white;
 	  }
+	  #ServerSelect {
+		position: absolute;
+		font-size: 16px;
+		z-index: 2;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row;
+		background: rgb(0, 0, 0);
+		font-family: 'Pixel Font';
+		}
+		
+		#ServerSelect button {
+			background: transparent;
+			color: #ffffff;
+			margin: 10px;
+			display: inline-block;
+			text-align: center;
+			text-transform: uppercase;
+			cursor: pointer;
+		}
+		#ServerSelect button:hover {
+			background-color: grey;
+			color: white;
+		  }
+		  #hostOrJoinSelect {
+			position: absolute;
+			font-size: 16px;
+			z-index: 2;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: row;
+			background: rgb(0, 0, 0);
+			font-family: 'Pixel Font';
+			}
+			
+			#hostOrJoinSelect button {
+				background: transparent;
+				color: #ffffff;
+				margin: 10px;
+				display: inline-block;
+				text-align: center;
+				text-transform: uppercase;
+				cursor: pointer;
+			}
+			#hostOrJoinSelect button:hover {
+				background-color: grey;
+				color: white;
+			  }
 
 #notSupported {
 	width: 50%;
@@ -114,3 +176,145 @@ a, button, input, select {
 	margin-top: 20px;
 	padding: 10px;
 }
+
+.tablink { background-color: #000; color: white; }
+.tablink:hover { background-color: #3E3D3D; }
+#title{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 75px;
+  font-family: 'Pixel Font';
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#title2{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 75px;
+  font-family: 'Pixel Font';
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#title2 button {
+		background: transparent;
+        font-size: 25px;
+		color: #ffffff;
+        background-color: black;
+		margin: 10px;
+		display: inline-block;
+		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+    #title2 button:hover {
+        background-color: grey;
+        color: white;
+    }
+    #title2 text {
+		color: #ffffff;
+		display: inline-block;
+		text-align: center;
+		text-transform: uppercase;
+	}
+#text{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  font-size: 25px;
+  font-family: 'Pixel Font';
+  background-color: black;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+@keyframes glowing {
+    0% {
+        background-color: white;
+        box-shadow: 0 0 5px white;
+    }
+    50% {
+        background-color: #8d8f8c;
+         box-shadow: 0 0 20px #8d8f8c;
+    }
+    100% {
+        background-color: black;
+        box-shadow: 0 0 5px rgb(51, 51, 51);
+    }
+}
+#text{
+    animation: glowing 2500ms infinite;
+}
+#selecttext{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#gameover {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+}
+#overText{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+#options{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 25px;
+	font-family: 'Pixel Font';
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+  }
+  #options button {
+		  background: transparent;
+		  font-size: 25px;
+		  color: #ffffff;
+		  background-color: black;
+		  margin: 10px;
+		  display: inline-block;
+		  text-align: center;
+		  text-transform: uppercase;
+		  cursor: pointer;
+	  }
+	  #options button:hover {
+		  background-color: grey;
+		  color: white;
+	  }
+	  #options text {
+		  color: #ffffff;
+		  display: inline-block;
+		  text-align: center;
+		  text-transform: uppercase;
+	  }

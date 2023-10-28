@@ -1,11 +1,12 @@
 import 'https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js';
 import {game} from './main.js'
+import {Port} from './StartMenu.js'
 export const CLIENT = (() => {
   class ConnectionClient{
     socket;
     game;
     constructor(){
-    const socket = io("https://outbreak2d.com:3000", {
+    const socket = io("www.outbreak2d.com", {
         rejectUnauthorized: false,
     });
     this.socket = socket;
@@ -41,11 +42,19 @@ export const CLIENT = (() => {
       $this.playerHasDied(avatar);
     });
 
+    this.socket.on('send zombie positions for', function(zombie, x, y, d){
+      console.log("message recieved");
+      $this.updateZombies(zombie, x, y, d);
+    })
+
     this.socket.on("connect", () => {
       console.log("connecting");
       this.socket.emit('connection');
       $this.makeZombies(10);
     });
+  }
+  updateZombies(zombie,x,y,d){
+    game.updateZombieValues(zombie,x,y,d);
   }
   updateGhostPosition(a,x,y,d){
     game.updateGhostAvatarPosition(a,x,y,d);
@@ -82,6 +91,10 @@ export const CLIENT = (() => {
   }
   sendDeathNote(a){
     this.socket.emit('send death for', a);
+  }
+  sendZombieValues(z,x,y,d,s){
+    console.log("message sent");
+    this.socket.emit('send zombie positions for', z,x,y,d);
   }
   };
   return {

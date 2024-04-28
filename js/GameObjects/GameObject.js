@@ -69,6 +69,7 @@ export class GameObject {
 
   setName(a) {
     this.#name = a;
+    this.getSprite().name = a;
   }
 
   getTexture(){

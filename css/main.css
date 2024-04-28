@@ -26,6 +26,21 @@ button {
     src: url("../fonts/Pixeboy-z8XGD.ttf");
 }
 
+.w3-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100; /* Or any value higher than other elements */
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100; /* Adjust z-index as needed */
+}
+
+
 #info {
 	position: absolute;
 	top: 0px;
@@ -272,12 +287,14 @@ a, button, input, select {
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
   z-index: 2;
+  font-family: 'Pixel Font';
 }
 #overText{
   position: absolute;
   top: 50%;
   left: 50%;
   font-size: 50px;
+  font-family: 'Pixel Font';
   color: white;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
@@ -318,3 +335,63 @@ a, button, input, select {
 		  text-align: center;
 		  text-transform: uppercase;
 	  }
+
+#mobileControls {
+position: fixed;
+bottom: 20px;
+left: 0;
+right: 0;
+display: flex;
+justify-content: space-between;
+align-items: end; /* This will align the dpad and shoot button along the bottom edge */
+padding: 0 20px;
+}
+
+#shootButton {
+position: fixed; /* Changed from absolute to fixed */
+width: 80px;
+height: 80px;
+border-radius: 50%;
+font-family: 'Pixel Font', sans-serif;
+color: #fff;
+bottom: 20px; /* Align with the bottom of mobileControls */
+right: 20px; /* Adjust as needed for spacing from the side */
+background-color: rgba(64, 59, 59, 0.499); /* Add a background color */
+border: none;
+cursor: pointer;
+}
+
+#dpad {
+position: fixed; /* Changed from absolute to fixed */
+bottom: 20px; /* Align with the bottom of mobileControls */
+left: 20px; /* Adjust as needed for spacing from the side */
+display: grid;
+width: 120px; /* Adjust if needed for the entire dpad width */
+grid-template-areas:
+". up ."
+"left . right"
+". down .";
+justify-content: center;
+align-content: center;
+}
+
+#dpad button {
+width: 40px;
+height: 40px;
+font-size: 24px; /* Adjust as needed */
+background-color:rgba(64, 59, 59, 0.499); /* Add a background color */
+color: #fff; /* Adjust text color for visibility */
+border: none;
+cursor: pointer;
+}
+
+/* Ensure your button areas correspond correctly */
+#up { grid-area: up; }
+#left { grid-area: left; }
+#right { grid-area: right; }
+#down { grid-area: down; }
+
+.control {
+/* Your styles for the controls */
+font-family: 'Pixel Font', sans-serif;
+}

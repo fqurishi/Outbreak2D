@@ -10,6 +10,7 @@ const menuButtons = {
   options: document.getElementById('OPTIONS')
 };
 
+const navbar = document.getElementById('navbar');
 const startMenu = document.getElementById('title');
 const menuSelect = document.getElementById('title2');
 const characterSelect = document.getElementById('CharacterSelect');

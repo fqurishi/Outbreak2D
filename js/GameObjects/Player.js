@@ -163,6 +163,10 @@ export class Player extends GameObject {
     return this.#ammo;
   }
 
+  setAmmo(x) {
+    this.#ammo = x;
+  }
+
   getHealth() {
     return this.#health;
   }
@@ -205,6 +209,9 @@ export class Player extends GameObject {
 
   shootGun() {
     this.#ammo = this.getAmmo() - 1;
+    if (this.#ammo <= 0 ){
+      this.#ammo = 0
+    }
   }
 
   damaged() {

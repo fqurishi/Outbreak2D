@@ -4,6 +4,7 @@ import MoveAction from "../Commands/Player/MoveAction.js";
 import ShootAction from "../Commands/Player/ShootAction.js";
 import HitAction from "../Commands/Player/HitAction.js";
 import DeathAction from "../Commands/Player/DeathAction.js";
+import ReloadAction from "../Commands/Player/ReloadAction.js"
 export class PlayerController {
     constructor(player, audioLoader, listener) {
         this.player = player;
@@ -21,10 +22,10 @@ export class PlayerController {
         Idle: false,
         };
         this.actions = {
-            Hit: new HitAction(this.player, this.state),
+            Hit: new HitAction(this.player, this.state, this.audioLoader, this.listener),
             Death: new DeathAction(this.player, this.state),
             Move: new MoveAction(this.player, this.state, this.audioLoader, this.listener),
-            //Reload: new ReloadAction(this.player, this.state),
+            Reload: new ReloadAction(this.player, this.state, this.audioLoader, this.listener),
             Shoot: new ShootAction(this.player, this.state, this.audioLoader, this.listener),
             Idle: new IdleAction(this.player, this.state)
 
@@ -171,6 +172,10 @@ export class PlayerController {
         }
     }
 
+    reload(){
+        this.state.Reload = true;
+    }
+
     update() {
         let activeActions = []
         switch (true){
@@ -180,6 +185,8 @@ export class PlayerController {
             case this.state.Hit:
                 this.enterState('Hit', activeActions);
             break;
+            case this.state.Reload:
+                this.enterState('Reload', activeActions);
             case this.state.Right:
                 this.enterState('Move', activeActions, 'Right');
             break;

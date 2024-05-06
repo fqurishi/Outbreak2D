@@ -1,11 +1,13 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import { Player } from './GameObjects/Player.js';
 import { Zombie } from './GameObjects/Zombie.js';
+import { AmmoBox } from './GameObjects/AmmoBox.js';
 // import {ghostAvatar} from './GhostAvatar.js';
 // import {CLIENT} from './Client.js';
 import {volume, GameMode, Host} from './StartMenu.js';
 import { PlayerController } from './Controllers/PlayerController.js';
 import { ZombieController } from './Controllers/ZombieController.js';
+import { AmmoBoxController } from './Controllers/AmmoBoxController.js';
 
 
 
@@ -57,6 +59,10 @@ const tex4 = new THREE.TextureLoader().load( './resources/OBbackground4.png' );
 
 // bullet controllers
 let bulletControllers = [];
+
+// ammobox controllers + ammoboxes
+let ammoboxes = [];
+let ammoBoxControllers = [];
 
 // zombies and zombie controllers
 let zombies = [];
@@ -124,9 +130,10 @@ const frameRate = 8; // 8 frames per second
 const frameInterval = 1000 / frameRate; // Interval in milliseconds
 let currentRound = 1;
 let lastRoundStartTime = 0;
-let roundDuration = 75 * 1000; // 1.25 minutes in milliseconds
+let roundDuration = 45 * 1000; // 45 seconds in milliseconds
 const backgrounds = [tex1, tex2, tex3, tex4];
 let currentBackgroundIndex = 0;
+let roundStartIndex = 0;
 
 
 let lastFrameTime = 0;
@@ -134,18 +141,29 @@ let lastFrameTime = 0;
 const animate = function (timestamp) {
     if (!lastRoundStartTime) lastRoundStartTime = timestamp; // Initialize on first frame
 
+    // Update the background based on time
     if (timestamp - lastRoundStartTime >= roundDuration) {
-        // Move to the next background
+
         currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
         bgSprite.material.map = backgrounds[currentBackgroundIndex];
-
-        // If we're back at the first background, increment the round and add zombies
-        if (currentBackgroundIndex === 0) {
-            currentRound++;
-            addZombies(5); // Assuming you have a function to add 5 zombies
+        if (Math.random() < 0.20) {
+            addAmmoBox(1);
         }
+        lastRoundStartTime = timestamp; // Reset the start time for the next background update
 
-        lastRoundStartTime = timestamp; // Reset the start time for the next round
+        // Check if the new background is the roundStartIndex to initiate a new round
+        if (currentBackgroundIndex === roundStartIndex) {
+            currentRound++;
+            addZombies(5); // Add 5 zombies for the new round
+            addAmmoBox(1);
+        }
+    }
+
+    // Check if all zombies are killed
+    if (zombieControllers.length === 0) {
+        roundStartIndex = currentBackgroundIndex; // Update roundStartIndex to the current background
+        currentRound++;
+        addZombies(5); // Add 5 zombies for the new round
     }
     if (timestamp - lastFrameTime >= frameInterval) {
         player1Controller.update();
@@ -188,7 +206,6 @@ const animate = function (timestamp) {
                     const bulletX = bulletController.bullet.getX(); 
                     const bulletY = bulletController.bullet.getY(); 
                     const distance = Math.sqrt((zombieX - bulletX) ** 2 + (zombieY - bulletY) ** 2);
-                    console.log(distance)
                     if (distance <= 3.5) {
                         // Trigger code in bulletController.js to setLife() to false
                         bulletController.bullet.setLife(false);
@@ -198,6 +215,26 @@ const animate = function (timestamp) {
                 }
             } else {
                 bulletControllers.splice(i, 1);
+            }
+        }
+        for (let i = 0; i < ammoBoxControllers.length; i++) {
+            const ammoBoxController = ammoBoxControllers[i];
+            if (!ammoBoxController.checkDeath()) {
+                ammoBoxController.update();
+                // Check for collision with player
+                const playerX = player1.getX();
+                const playerY = player1.getY();
+                const ammoBoxX = ammoBoxController.ammobox.getX(); 
+                const ammoBoxY = ammoBoxController.ammobox.getY(); 
+                const distance = Math.sqrt((playerX - ammoBoxX) ** 2 + (playerY - ammoBoxY) ** 2);
+                if (distance <= 3.5) {
+                    // Trigger code in ammoboxontroller.js to setLife() to false
+                    ammoBoxController.ammobox.setLife(false);
+                    // Trigger code in playercontroller.js to set its state to Hit
+                    player1Controller.reload();
+                }
+            } else {
+                ammoBoxControllers.splice(i, 1);
             }
         }
         if (!player1.getLife()){
@@ -380,6 +417,16 @@ function addZombies(number) {
         zombies.push(zombie);
         zombieControllers.push(zombieController)
         scene.add(zombie.getSprite())
+    }
+}
+
+function addAmmoBox(number) {
+    for (let i = 0; i < number; i++) {
+        let ammobox = new AmmoBox(scene);
+        let ammoBoxController = new AmmoBoxController(ammobox)
+        ammoboxes.push(ammobox);
+        ammoBoxControllers.push(ammoBoxController)
+        scene.add(ammobox.getSprite())
     }
 }
 

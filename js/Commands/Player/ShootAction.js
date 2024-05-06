@@ -7,7 +7,9 @@ export default class ShootAction
         this.state = state;
         this.audioLoader = audioLoader;
         this.s3 = new Audio(listener);
+        this.s4 = new Audio(listener);
         this.loadAndConfigureAudio(this.s3, './resources/GunShot.wav', false, 5);
+        this.loadAndConfigureAudio(this.s4, './resources/Misfire.wav', false, 5);
 
     }
 
@@ -16,20 +18,32 @@ export default class ShootAction
             case this.player.Stand:
             case this.player.Gun_Stand:
                 this.player.setTexture(this.player.Gun_Stand);
-                this.player.makeBullet()
+                if (this.player.getAmmo() > 0){
+                    this.player.shootGun()
+                    this.player.makeBullet()
+                    this.s3.play()
+                }
+                else{
+                    this.s4.play()
+                }
             break;
             case this.player.Walk:
             case this.player.Gun_Walk:
                 this.player.setTexture(this.player.Gun_Walk);
-                this.player.makeBullet()
+                if (this.player.getAmmo() > 0){
+                    this.player.shootGun()
+                    this.player.makeBullet()
+                    this.s3.play()
+                }
+                else{
+                    this.s4.play()
+                }
             break;
             // Add more cases as needed
             default:
             // Handle other cases or do nothing
             break;
         }
-        this.s3.play()
-     
     }
 
     enter(activeActions){

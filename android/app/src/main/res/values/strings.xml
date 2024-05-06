@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Outbreak 2D</string>
-    <string name="title_activity_main">Outbreak 2D</string>
-    <string name="package_name">com.outbreak2d</string>
-    <string name="custom_url_scheme">com.outbreak2d</string>
-</resources>

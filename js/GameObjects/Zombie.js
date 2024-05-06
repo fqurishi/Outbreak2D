@@ -136,7 +136,7 @@ export class Zombie extends GameObject {
         this.#width = null;
         this.#height = null;
         this.#ammo = 16;
-        this.#health = 15;
+        this.#health = 5;
         this.getSprite().position.set( 1, 0, 0);
         this.getSprite().scale.set(4,4,4);
         this.setName("Zombie");

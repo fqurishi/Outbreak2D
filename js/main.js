@@ -111,7 +111,7 @@ function init() {
     player1Controller = new PlayerController(player1, audioLoader, listener);
 
     // load zombies + controller
-    for (let i = 0; i < 6; i++){
+    for (let i = 0; i < 3; i++){
         let zombie = new Zombie(scene);
         let zombieController = new ZombieController(zombie)
         zombies.push(zombie);
@@ -154,7 +154,7 @@ const animate = function (timestamp) {
         // Check if the new background is the roundStartIndex to initiate a new round
         if (currentBackgroundIndex === roundStartIndex) {
             currentRound++;
-            addZombies(5); // Add 5 zombies for the new round
+            addZombies(computeZombies(currentRound)); // Add 5 zombies for the new round
             addAmmoBox(1);
         }
     }
@@ -163,7 +163,7 @@ const animate = function (timestamp) {
     if (zombieControllers.length === 0) {
         roundStartIndex = currentBackgroundIndex; // Update roundStartIndex to the current background
         currentRound++;
-        addZombies(5); // Add 5 zombies for the new round
+        addZombies(computeZombies(currentRound)); // Add 5 zombies for the new round
     }
     if (timestamp - lastFrameTime >= frameInterval) {
         player1Controller.update();
@@ -441,3 +441,18 @@ function updateHUD(currentRound, player1) {
     ammoElement.innerHTML = `Ammo: ${player1.getAmmo()}`;
 }
 
+function computeZombies(round) {
+    if (round % 9 === 1 || round % 9 === 2) {
+        return 3; // Rounds 1, 2, 10, 11, 19, 20, ...
+    } else if (round % 9 === 3) {
+        return 4; // Rounds 3, 12, 21, ...
+    } else if (round % 9 === 4 || round % 9 === 5) {
+        return 6; // Rounds 4, 5, 13, 14, ...
+    } else if (round % 9 === 6) {
+        return 7; // Rounds 6, 15, 24, ...
+    } else if (round % 9 === 7 || round % 9 === 8) {
+        return 9; // Rounds 7, 8, 16, 17, ...
+    } else if (round % 9 === 0) {
+        return 10; // Rounds 9, 18, 27, ...
+    }
+}

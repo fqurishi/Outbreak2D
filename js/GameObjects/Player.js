@@ -242,5 +242,9 @@ export class Player extends GameObject {
       this[key] = new TextureLoader().load(`./resources/${textures[key]}`);
     }
   }
+
+  heal(){
+    this.#health = 15;
+  }
 }
 

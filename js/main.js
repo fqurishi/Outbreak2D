@@ -2,12 +2,15 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import { Player } from './GameObjects/Player.js';
 import { Zombie } from './GameObjects/Zombie.js';
 import { AmmoBox } from './GameObjects/AmmoBox.js';
+import { HealthBox } from './GameObjects/HealthBox.js';
+
 // import {ghostAvatar} from './GhostAvatar.js';
 // import {CLIENT} from './Client.js';
 import {volume, GameMode, Host} from './StartMenu.js';
 import { PlayerController } from './Controllers/PlayerController.js';
 import { ZombieController } from './Controllers/ZombieController.js';
 import { AmmoBoxController } from './Controllers/AmmoBoxController.js';
+import { HealthBoxController } from './Controllers/HealthBoxController.js';
 
 
 
@@ -63,6 +66,10 @@ let bulletControllers = [];
 // ammobox controllers + ammoboxes
 let ammoboxes = [];
 let ammoBoxControllers = [];
+
+// healthbox controllers + healthboxes
+let healthboxes = [];
+let healthBoxControllers = [];
 
 // zombies and zombie controllers
 let zombies = [];
@@ -130,7 +137,7 @@ const frameRate = 8; // 8 frames per second
 const frameInterval = 1000 / frameRate; // Interval in milliseconds
 let currentRound = 1;
 let lastRoundStartTime = 0;
-let roundDuration = 45 * 1000; // 45 seconds in milliseconds
+let roundDuration = 35 * 1000; // 35 seconds in milliseconds
 const backgrounds = [tex1, tex2, tex3, tex4];
 let currentBackgroundIndex = 0;
 let roundStartIndex = 0;
@@ -148,6 +155,13 @@ const animate = function (timestamp) {
         bgSprite.material.map = backgrounds[currentBackgroundIndex];
         if (Math.random() < 0.20) {
             addAmmoBox(1);
+            addHealthBox(1);
+        }
+        else if (player1.getAmmo() == 0){
+            addAmmoBox(1);
+        }
+        if (player1.getHealth() < 8){
+            addHealthBox(1);
         }
         lastRoundStartTime = timestamp; // Reset the start time for the next background update
 
@@ -155,7 +169,6 @@ const animate = function (timestamp) {
         if (currentBackgroundIndex === roundStartIndex) {
             currentRound++;
             addZombies(computeZombies(currentRound)); // Add 5 zombies for the new round
-            addAmmoBox(1);
         }
     }
 
@@ -164,6 +177,8 @@ const animate = function (timestamp) {
         roundStartIndex = currentBackgroundIndex; // Update roundStartIndex to the current background
         currentRound++;
         addZombies(computeZombies(currentRound)); // Add 5 zombies for the new round
+        addAmmoBox(1);
+        addHealthBox(1);
     }
     if (timestamp - lastFrameTime >= frameInterval) {
         player1Controller.update();
@@ -235,6 +250,26 @@ const animate = function (timestamp) {
                 }
             } else {
                 ammoBoxControllers.splice(i, 1);
+            }
+        }
+        for (let i = 0; i < healthBoxControllers.length; i++) {
+            const healthBoxController = healthBoxControllers[i];
+            if (!healthBoxController.checkDeath()) {
+                healthBoxController.update();
+                // Check for collision with player
+                const playerX = player1.getX();
+                const playerY = player1.getY();
+                const healthBoxX = healthBoxController.healthbox.getX(); 
+                const healthBoxY = healthBoxController.healthbox.getY(); 
+                const distance = Math.sqrt((playerX - healthBoxX) ** 2 + (playerY - healthBoxY) ** 2);
+                if (distance <= 3.5) {
+                    // Trigger code in healthboxontroller.js to setLife() to false
+                    healthBoxController.healthbox.setLife(false);
+                    // Trigger code in playercontroller.js to set its state to Hit
+                    player1Controller.reload();
+                }
+            } else {
+                healthBoxControllers.splice(i, 1);
             }
         }
         if (!player1.getLife()){
@@ -427,6 +462,16 @@ function addAmmoBox(number) {
         ammoboxes.push(ammobox);
         ammoBoxControllers.push(ammoBoxController)
         scene.add(ammobox.getSprite())
+    }
+}
+
+function addHealthBox(number) {
+    for (let i = 0; i < number; i++) {
+        let healthbox = new HealthBox(scene);
+        let healthBoxController = new HealthBoxController(ammobox)
+        healthboxes.push(healthbox);
+        healthBoxControllers.push(healthBoxController)
+        scene.add(healthbox.getSprite())
     }
 }
 

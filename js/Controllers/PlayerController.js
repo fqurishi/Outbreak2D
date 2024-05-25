@@ -176,6 +176,10 @@ export class PlayerController {
         this.state.Reload = true;
     }
 
+    heal(){
+        this.player.heal();
+    }
+
     update() {
         let activeActions = []
         switch (true){

@@ -468,7 +468,7 @@ function addAmmoBox(number) {
 function addHealthBox(number) {
     for (let i = 0; i < number; i++) {
         let healthbox = new HealthBox(scene);
-        let healthBoxController = new HealthBoxController(ammobox)
+        let healthBoxController = new HealthBoxController(healthbox)
         healthboxes.push(healthbox);
         healthBoxControllers.push(healthBoxController)
         scene.add(healthbox.getSprite())

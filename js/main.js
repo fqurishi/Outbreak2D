@@ -266,7 +266,7 @@ const animate = function (timestamp) {
                     // Trigger code in healthboxontroller.js to setLife() to false
                     healthBoxController.healthbox.setLife(false);
                     // Trigger code in playercontroller.js to set its state to Hit
-                    player1Controller.reload();
+                    player1Controller.heal();
                 }
             } else {
                 healthBoxControllers.splice(i, 1);

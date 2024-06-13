@@ -38,6 +38,15 @@ export class PlayerController {
 
         document.getElementById('hud').style.display = 'flex';
 
+        document.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+        }, { passive: false });
+          
+          document.addEventListener('scroll', function(event) {
+            window.scrollTo(0, 0);
+        });
+          
+
         this.setupKeyListeners();
         if (/Mobi|Android/i.test(navigator.userAgent)) {
             document.getElementById('mobileControls').style.display = 'flex';

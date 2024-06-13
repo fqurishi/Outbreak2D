@@ -10,6 +10,15 @@ body {
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Edge */
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 a {
@@ -416,4 +425,32 @@ font-family: 'Pixel Font', sans-serif;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+/* Media Queries for Different Screen Sizes */
+@media (max-width: 480px) {
+    #title, #title2, #text, #selecttext, #overText {
+        font-size: 20px; /* Adjust as needed */
+    }
+    #title2 button, #options button {
+        font-size: 15px; /* Adjust as needed */
+        padding: 10px; /* Adjust as needed */
+    }
+}
+@media (max-width: 720px) {
+    #title, #title2, #text, #selecttext, #overText {
+        font-size: 30px; /* Adjust as needed */
+    }
+    #title2 button, #options button {
+        font-size: 20px; /* Adjust as needed */
+        padding: 15px; /* Adjust as needed */
+    }
+}
+@media (min-width: 721px) and (max-width: 1024px) {
+    #title, #title2, #text, #selecttext, #overText {
+        font-size: 40px; /* Adjust as needed */
+    }
+    #title2 button, #options button {
+        font-size: 25px; /* Adjust as needed */
+        padding: 20px; /* Adjust as needed */
+    }
 }

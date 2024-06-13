@@ -1,25 +1,25 @@
 import {Audio} from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 
-export default class ReloadAction
+export default class HealAction
 {
     constructor(player, state, audioLoader, listener){
         this.player = player;
         this.state = state;
         this.audioLoader = audioLoader;
         this.s3 = new Audio(listener);
-        this.loadAndConfigureAudio(this.s3, './resources/Reload.wav', false, 5);
+        this.loadAndConfigureAudio(this.s3, './resources/Heal.mp3', false, 5);
 
 
     }
 
-    reload(){
+    heal(){
         this.s3.play();
-        this.player.setAmmo(16);
-        this.state.Reload = false;
+        this.player.heal();
+        this.state.Heal = false;
     }
 
     enter(activeActions){
-        this.reload();
+        this.heal();
     }
 
     loadAndConfigureAudio(audioSource, url, loop, volume) {

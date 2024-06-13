@@ -60,7 +60,7 @@ export class ZombieController {
                 this.enterState('Hit', activeActions)
             break;
             case this.state.Attack:
-                this.enterState('Attack', activeActions)
+                this.enterState('Attack', activeActions, this.playerPosY)
             break;
             case this.state.Right:
                 this.enterState('Move', activeActions, 'Right')
@@ -138,7 +138,7 @@ export class ZombieController {
     
         if (distance <= attackRadius && !this.closestPlayer.state.Death) {
             this.state.Attack = true;
-            if (this.zombie.getTexture() == this.zombie.Attack_03)
+            if (this.zombie.getTexture() == this.zombie.Attack_03 || this.zombie.getTexture() == this.zombie.AttackUp_03 || this.zombie.getTexture() == this.zombie.AttackDown_03)
                 this.closestPlayer.hit()
         }
         if (distance <= distanceRadius && Math.abs(deltaY) <= 1 && !this.closestPlayer.state.Death){
